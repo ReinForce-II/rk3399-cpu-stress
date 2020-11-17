@@ -77,24 +77,15 @@ void main(void)
         arsize = 200;
         arsize2d = (long)arsize*(long)arsize;
         memreq=arsize2d*sizeof(REAL)+(long)arsize*sizeof(REAL)+(long)arsize*sizeof(int);
-        printf("Memory required:  %ldK.\n",(memreq+512L)>>10);
         malloc_arg=(size_t)memreq;
         if (malloc_arg!=memreq || (mempool=malloc(malloc_arg))==NULL)
             {
-            printf("Not enough memory available for given array size.\n\n");
             continue;
             }
-        printf("\n\nLINPACK benchmark, %s precision.\n",PREC);
-        printf("Machine precision:  %d digits.\n",BASE10DIG);
-        printf("Array size %d X %d.\n",arsize,arsize);
-        printf("Average rolled and unrolled performance:\n\n");
-        printf("    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS\n");
-        printf("----------------------------------------------------\n");
         nreps=128;
         while (linpack(nreps,arsize)<10.)
             nreps*=2;
         free(mempool);
-        printf("\n");
         }
     }
 
@@ -148,10 +139,6 @@ static REAL linpack(long nreps,int arsize)
         tdgesl=0.;
     if (toverhead<0.)
         toverhead=0.;
-    printf("%8ld %6.2f %6.2f%% %6.2f%% %6.2f%%  %9.3f\n",
-            nreps,totalt,100.*tdgefa/totalt,
-            100.*tdgesl/totalt,100.*toverhead/totalt,
-            kflops);
     return(totalt);
     }
 
